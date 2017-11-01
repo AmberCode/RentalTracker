@@ -9,7 +9,7 @@ using System.Threading;
 using Google.Apis.Util.Store;
 using Google.Apis.Services;
 using System.IO;
-using Google.Apis.Download;
+
 
 namespace RentalTracker.Services.GoogleDrive
 {
@@ -17,7 +17,7 @@ namespace RentalTracker.Services.GoogleDrive
     {
         //TODO: put these var values into config file
         private string client_secret_json =
-            @"{'installed':{'client_id':'1012994236929-p8a7h5b9e0m401m27270ea8jp4p66136.apps.googleusercontent.com','project_id':'ornate-fragment-171506','auth_uri':'https://accounts.google.com/o/oauth2/auth','token_uri':'https://accounts.google.com/o/oauth2/token','auth_provider_x509_cert_url':'https://www.googleapis.com/oauth2/v1/certs','client_secret':'fPESa7pLAl-73tWuzipOuXA_','redirect_uris':['urn:ietf:wg:oauth:2.0:oob','http://localhost']}}";
+            @"{'installed':{'client_id':'','project_id':'','auth_uri':'https://accounts.google.com/o/oauth2/auth','token_uri':'https://accounts.google.com/o/oauth2/token','auth_provider_x509_cert_url':'https://www.googleapis.com/oauth2/v1/certs','client_secret':'','redirect_uris':['urn:ietf:wg:oauth:2.0:oob','http://localhost']}}";
         static string[] Scopes = { DriveService.Scope.Drive };
         static string ApplicationName = "RentalTracker";
         public async Task<IEnumerable<GoogleDriveFileModel>> GetAll()
