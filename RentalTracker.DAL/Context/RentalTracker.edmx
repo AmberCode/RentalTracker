@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RentalTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="PropertyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ZipCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="OwnerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tenant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PropertyId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+          <Property Name="RentalPrice" Type="money" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Tenant_Property">
+          <End Role="Property" Type="Self.Property" Multiplicity="1" />
+          <End Role="Tenant" Type="Self.Tenant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tenant">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RentalTrackerModelStoreContainer">
+          <EntitySet Name="Property" EntityType="Self.Property" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tenant" EntityType="Self.Tenant" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tenant_Property" Association="Self.FK_Tenant_Property">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="Tenant" EntitySet="Tenant" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RentalTrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PropertyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Tenants" Relationship="RentalTrackerModel.FK_Tenant_Property" FromRole="Property" ToRole="Tenant" />
+        </EntityType>
+        <EntityContainer Name="RentalTrackerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Properties" EntityType="Self.Property" />
+          <EntitySet Name="Tenants" EntityType="RentalTrackerModel.Tenant" />
+          <AssociationSet Name="FK_Tenant_Property" Association="RentalTrackerModel.FK_Tenant_Property">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="Tenant" EntitySet="Tenants" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Tenant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PropertyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RentalPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="Property" Relationship="RentalTrackerModel.FK_Tenant_Property" FromRole="Tenant" ToRole="Property" />
+        </EntityType>
+        <Association Name="FK_Tenant_Property">
+          <End Type="RentalTrackerModel.Property" Role="Property" Multiplicity="1" />
+          <End Type="RentalTrackerModel.Tenant" Role="Tenant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tenant">
+              <PropertyRef Name="PropertyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RentalTrackerModelStoreContainer" CdmEntityContainer="RentalTrackerEntities">
+          <EntitySetMapping Name="Properties">
+            <EntityTypeMapping TypeName="RentalTrackerModel.Property">
+              <MappingFragment StoreEntitySet="Property">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tenants">
+            <EntityTypeMapping TypeName="RentalTrackerModel.Tenant">
+              <MappingFragment StoreEntitySet="Tenant">
+                <ScalarProperty Name="RentalPrice" ColumnName="RentalPrice" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
